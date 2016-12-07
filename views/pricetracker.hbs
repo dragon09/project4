@@ -1,0 +1,20 @@
+<h1>Price Track a Product</h1>
+
+
+<form action='/pricetracker' method='POST'>
+	<label>Price Notification</label>
+	<label>Set Price:
+		<input type='number' min='0' max='{{ (item_price)/100 }}'
+			   value='{{ (item_price)/100 }}' name='alert_price'>
+	</label>
+	<label>Length of Notifcation (Number of Days):
+		<input type='number' min='0' max='5' name='alert_num_days'>
+	</label>
+
+	<input type='hidden' name='item_asin' value='{{ item_asin }}'>
+	<input type='hidden' name='item_title' value='{{ item_title }}'>
+	<input type='hidden' name='item_price' value='{{ item_price }}'>
+	<input type='hidden' name='item_price_f' value='{{ item_price_f }}'>
+	<input type='hidden' name='item_url' value='{{ item_url }}'>
+	<input type='submit'>
+</form>

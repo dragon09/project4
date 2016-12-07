@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="description" content="">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,700,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+  </head>
+  </head>
+  <body>
+    {{{body}}}
+<hr>
+
+<nav>
+  <div class="nav-wrapper">
+    <a href="#" class="brand-logo center">Logo</a>
+    <ul id="nav-mobile" class="left hide-on-med-and-down">
+      <li><a href="sass.html">Home</a></li>
+      <li><a href="#"></a>Track a Product</li>
+      <li><a href="badges.html">Register</a></li>
+      <li><a href="collapsible.html">Log In</a></li>
+    </ul>
+  </div>
+</nav>
+<p>Price Trackers allows users to search and set price notifications for Amazon products.
+  The app is catered to users who hold off on buying products in hopes of a price decrease.
+  Users can set a price alert on any product for one to five days.
+  If the price of their selected product drops, they will be notified via text with a link to the product.
+  Users are able to add multiple alerts, manage current alerts, and see their recently viewed products. </p>
+
+
+<div class="jumbotron container-fluid">
+    <div class="container">
+      <div class="row">
+        <!-- <div class="col-md-2">
+          <img src="img/yourorders.png">
+        </div> -->
+        <!-- <div class="col-md-7"> -->
+          <div class="slogan">
+            <h4>Track the price changes of your items</h4>
+          </div>
+        </div>
+      </div>
+
+
+      <form action='/pricetracker' method='POST'>
+      	<h5>Create Price Notification</h5>
+      	 <input type="text" name="asin" value="" placeholder="Enter the Product ASIN">
+         <input type="text" name="" value="" placeholder="Enter the desired price (USD):">
+         <input type="text" name="" value="" placeholder="Enter your PushBullet token:">
+      		<input type='number' min='0' max='' value='' name='alert_price' placeholder="Enter your phone number:">
+      	   <input type='number' min='0' max='5' name='alert_num_days' placeholder="Length of Notifcation (Number of Days):">
+      	<input type='submit'>
+      </form>
+      <br>
+      <br>
+      <hr>
+      <div class="row">
+        <div class="col-md-6 col-md-offset-2 searchBar">
+          <div class="input-group">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-search dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Category <span class="caret"></span></button>
+              <ul class="dropdown-menu" role="menu">
+              <li><a href="#">All</a></li>
+              <li><a href="#">Apparel</a></li>
+              <li><a href="#">Beauty</a></li>
+              <li><a href="#">Books</a></li>
+              <li><a href="#">Electronics</a></li>
+              <li><a href="#">Tools</a></li>
+              <li><a href="#">Toys</a></li>
+              </ul>
+            </div>
+
+            <input type="text" class="form-control search-text" id="userSearch" placeholder="Enter product name (i.e. backpack)">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-search submitSearch"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- <div class="price-table">
+      <tr id="actualPriceRow">
+        <td id="actualPriceLabel" class="priceBlockLabel">Price</td>
+        <td id="actualPriceContent">Price content</td>
+      </tr>
+    </div> -->
+
+    <br>
+    <br>
+    <footer id="page-footer">
+            © 2016 Created in Express || NODE JS || By Victoria ||
+    </footer>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script src="https://unpkg.com/masonry-layout@4.1/dist/masonry.pkgd.min.js"></script>
+    <script src="/javascripts/app.js" charset="utf-8"></script>
+  </body>
+</html>

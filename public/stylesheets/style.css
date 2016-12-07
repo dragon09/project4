@@ -1,0 +1,31 @@
+body {
+  padding: 50px;
+  font: 14px "Robato Condensed", "Raleway", Arial, sans-serif;
+  background-color: #FFC300; }
+
+a {
+  color: #00B7FF; }
+
+h3, h4, th {
+  font-family: 'Karla', sans-serif; }
+
+.jumbotron {
+  background-color: gray;
+  padding: 10px 25px 15px 25px;
+  margin-left: 50px;
+  margin-right: 50px;
+  width: 1150px;
+  float: both; }
+
+.slogan {
+  color: blue;
+  font-family: 'Karla'; }
+
+.nav-wrapper {
+  margin-bottom: 0px;
+  font-size: 14px;
+  background-color: black; }
+
+/* loading gif */
+
+/*# sourceMappingURL=style.css.map */
