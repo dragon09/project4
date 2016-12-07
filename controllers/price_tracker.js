@@ -1,6 +1,8 @@
 var request = require('request');
 var fs = require('fs');
 var cheerio = require('cheerio');
+var prompt = require('prompt');
+var pb = require('pushbullet');
 
 // var sendgrid = require("sendgrid")("SENDGRID_APIKEY");
 // var email = new sendgrid.Email();
@@ -13,19 +15,30 @@ var cheerio = require('cheerio');
 // sendgrid.send(email);
 
 // var asin = 'B01E6AO69U';
-var asin = 'B008BEYEL8';
-var amzn_url = 'http://www.amazon.com/dp/' + asin;
+//http://www.amazon.com/dp/B008BEYEL8
 
-console.log('requesting', amzn_url);
-request(amzn_url, function (error, response, body) {
-  fs.writeFile('product.html', body, function(error) {
-    console.log('Page has been saved!');
+var amzn_domain_url= "http://www.amazon.com/dp/";
+var asin='';
+var amzn_url = '';
+
+
+prompt.start();
+
+prompt.get(['asin'], function(err,result){
+  console.log('Entered amazon url is ' + result.asin);
+  amzn_url = amzn_domain_url + result.asin;
+  console.log('requesting', amzn_url);
+
+  request(amzn_url, function (error, response, body) {
+    fs.writeFile('product.html', body, function(error) {
+      console.log('Page has been saved!');
+    });
+
   });
 
-});
+  checkPrice();
 
-checkPrice();
-
+})
 
 var prev_price;
 
@@ -33,42 +46,51 @@ function checkPrice() {
   request (amzn_url, function (error, response, body) {
     var $ = cheerio.load(body);
     var list_price = $('#priceblock_ourprice').text();
+    var item_name = $("#productTitle").text();
     var stripped_price = +list_price.replace('$', '').replace(',', '');
     console.log('PRICE:', stripped_price);
 
     if(stripped_price <= prev_price){
-      notify();
+      notify(item_name,"down",stripped_price, prev_price);
     }
 
     else if (stripped_price >= prev_price) {
-      notify();
+      notify(item_name,"up", stripped_price, prev_price);
     }
 
     prev_price = stripped_price;
 
   });
 
-  setTimeout(checkPrice, 60000);
+  setTimeout(checkPrice, 10000);
 }
 
 
 var cl = console.log;
 var jsonify = JSON.stringify;
 
-function notify(){
-  console.log('PUSH! ALERT! The  item price  is now lower!');
-
-  console.log('Price is going up!  Buy now!');
-  var pushBullet = new pb("o.w4vaucUjHlG3eyEZgjSilhdLObLrmvkk");
+function notify(item,updown, current, prev){
+  var message = "";
+  if(updown == "up"){
+    message = "The item "+ item +" price is raised from $"+ prev + " to $"+ current;
+  }else if (updown = "down"){
+    message = "The item "+ item+ " price is dropped to $"+current + " from $"+prev;
+  }else{
+    message = "There is no change in the items price";
+  }
+  console.log('Sending PUSH! ALERT!');
+  var pushBullet = new pb("o.Di1vhBbC18bYUoxmmQvVffiE5nrb4OKA");
   cl('pushBullet', jsonify(pushBullet));
-  pushBullet.alert(null, "Amazon Price Watch", "Price dropped for: ", amzn_url, function (error, response) {
+   console.log("push bullet object", pushBullet);
+  pushBullet.note(null, "Amazon Price Watch", message, amzn_url, function (error, response) {
+
     process.exit()
 
- 
+
   });
 }
 
-// FE: AJAX calls to your BE
+// FE: AJAX calls to BE
 // BE in Express
 // REST request
 // jQuery pseudocode
@@ -106,9 +128,9 @@ function notify(){
 // fs.writeFileSync('/data/updates.json', updateRecord);
 
 
-// in express code
+// in express
 // when get request on /update URL
 
 // update = fs.readFileSync('/data/updates.json');
 // return update to FE
-// make sure this is the JSON return
+// this on JSON return
