@@ -4,15 +4,6 @@ var cheerio = require('cheerio');
 var prompt = require('prompt');
 var pb = require('pushbullet');
 
-// var sendgrid = require("sendgrid")("SENDGRID_APIKEY");
-// var email = new sendgrid.Email();
-//
-// email.addTo("test@sendgrid.com");
-// email.setFrom("victoria.fajardo@gmail.com");
-// email.setSubject("Sending with SendGrid is Fun");
-// email.setHtml("and easy to do anywhere, even with Node.js");
-//
-// sendgrid.send(email);
 
 // var asin = 'B01E6AO69U';
 //http://www.amazon.com/dp/B008BEYEL8
@@ -21,12 +12,9 @@ var amzn_domain_url= "http://www.amazon.com/dp/";
 var asin='';
 var amzn_url = '';
 
-
 prompt.start();
 
-prompt.get(['asin'], function(err,result){
-  console.log('Entered amazon url is ' + result.asin);
-  amzn_url = amzn_domain_url + result.asin;
+prompt.get(['asin'], function(err,result) { console.log('Entered amazon url is ' + result.asin); amzn_url = amzn_domain_url + result.asin;
   console.log('requesting', amzn_url);
 
   request(amzn_url, function (error, response, body) {
@@ -47,36 +35,36 @@ function checkPrice() {
     var $ = cheerio.load(body);
     var list_price = $('#priceblock_ourprice').text();
     var item_name = $("#productTitle").text();
-    var stripped_price = +list_price.replace('$', '').replace(',', '');
+    var stripped_price = + list_price.replace('$', '').replace(',', '');
     console.log('PRICE:', stripped_price);
 
-    if(stripped_price <= prev_price){
-      notify(item_name,"down",stripped_price, prev_price);
+    if (stripped_price <= prev_price){
+      notify (item_name, "down", stripped_price, prev_price);
     }
 
     else if (stripped_price >= prev_price) {
-      notify(item_name,"up", stripped_price, prev_price);
+      notify (item_name, "up", stripped_price, prev_price);
     }
 
     prev_price = stripped_price;
 
   });
 
-  setTimeout(checkPrice, 10000);
+  setTimeout(checkPrice, 60000);
 }
 
 
 var cl = console.log;
 var jsonify = JSON.stringify;
 
-function notify(item,updown, current, prev){
+function notify(item, updown, current, prev){
   var message = "";
-  if(updown == "up"){
-    message = "The item "+ item +" price is raised from $"+ prev + " to $"+ current;
-  }else if (updown = "down"){
-    message = "The item "+ item+ " price is dropped to $"+current + " from $"+prev;
-  }else{
-    message = "There is no change in the items price";
+  if (updown == "up" ){
+    message = "The item "+ item +" price went up from $"+ prev + " to $"+ current;
+  } else if (updown = "down"){
+    message = "The item "+ item + " price went down from $"+ current + " from $"+ prev;
+  } else{
+    message = "There is no change in the item price";
   }
   console.log('Sending PUSH! ALERT!');
   var pushBullet = new pb("o.Di1vhBbC18bYUoxmmQvVffiE5nrb4OKA");
